@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Versioning
 
-Current project version: `1.7.1`
+Current project version: `1.0.0`
 
 - `#.#.1` patch releases are small fixes, documentation changes, and low-risk
   cleanup adjustments.
