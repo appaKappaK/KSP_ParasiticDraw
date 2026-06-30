@@ -4,14 +4,22 @@ KSP.log
 Player.log
 output_log.txt
 *.log
+/Settings.cfg
 
 # Build outputs
 bin/
 obj/
+**/bin/
+**/obj/
 build/
 dist/
 release/
 *.zip
+*.mdb
+*.pdb
+GameData/ParasiticDraw/Plugins/*.dll
+GameData/ParasiticDraw/Plugins/*.pdb
+GameData/ParasiticDraw/Plugins/*.mdb
 
 # IDE/editor state
 .vs/

@@ -6,9 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-30
+
 ### Added
 
 - Initial repository scaffold for the ParasiticDraw KSP mod.
+- Project plan, default settings, version metadata, build project, passive draw
+  plugin, and calculation tests for the first playable version.
+- Dynamic Battery Storage compatibility reporting for ParasiticDraw passive
+  consumption.
 
 ## Versioning
 

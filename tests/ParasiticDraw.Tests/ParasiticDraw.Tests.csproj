@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89BFB912-13DE-4C4E-B9CC-167668B7F4CC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ParasiticDraw.Tests</RootNamespace>
+    <AssemblyName>ParasiticDraw.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="..\..\src\ParasiticDraw\ParasiticDrawSettings.cs">
+      <Link>ParasiticDrawSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\ParasiticDraw\ParasiticDrawSettingsParser.cs">
+      <Link>ParasiticDrawSettingsParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\ParasiticDraw\PassiveDrawCalculator.cs">
+      <Link>PassiveDrawCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\ParasiticDraw\VesselDrawSnapshot.cs">
+      <Link>VesselDrawSnapshot.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

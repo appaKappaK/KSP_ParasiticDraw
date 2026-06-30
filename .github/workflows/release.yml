@@ -1,0 +1,136 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - CHANGELOG.md
+      - GameData/ParasiticDraw/**
+      - src/ParasiticDraw/**
+      - tests/ParasiticDraw.Tests/**
+      - .github/workflows/release.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    env:
+      KSP_REFERENCES_REPO: appaKappaK/NoMoreLeaks-build-references
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Mono build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mono-devel unzip zip jq
+
+      - name: Read version
+        id: version
+        run: |
+          version_json="GameData/ParasiticDraw/ParasiticDraw.version"
+          major="$(jq -r '.VERSION.MAJOR' "$version_json")"
+          minor="$(jq -r '.VERSION.MINOR' "$version_json")"
+          patch="$(jq -r '.VERSION.PATCH' "$version_json")"
+          version="${major}.${minor}.${patch}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Extract changelog notes
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          awk -v version="$version" '
+            index($0, "## [" version "]") == 1 { capture=1; next }
+            capture && index($0, "## ") == 1 { exit }
+            capture { print }
+          ' CHANGELOG.md | sed '/^[[:space:]]*$/N;/^\n$/D' > release-notes.md
+
+          if [ ! -s release-notes.md ]; then
+            echo "Missing changelog section for $version" >&2
+            exit 1
+          fi
+
+      - name: Download KSP reference assemblies
+        env:
+          KSP_REFERENCES_SSH_KEY: ${{ secrets.KSP_REFERENCES_SSH_KEY }}
+        run: |
+          mkdir -p refs ksp-buildrefs/all
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$KSP_REFERENCES_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+          git clone --depth 1 "git@github.com:${KSP_REFERENCES_REPO}.git" refs/private
+          cp refs/private/ksp-references.zip refs/ksp-references.zip
+          unzip -q refs/ksp-references.zip -d refs/ksp
+
+          find refs/ksp -type f \( \
+            -name 'Assembly-CSharp.dll' \
+            -o -name 'UnityEngine.dll' \
+            -o -name 'UnityEngine.CoreModule.dll' \
+            -o -name 'UnityEngine.UI.dll' \
+            -o -name 'System.dll' \
+            -o -name 'System.Core.dll' \
+          \) -exec cp {} ksp-buildrefs/all/ \;
+
+          test -f ksp-buildrefs/all/Assembly-CSharp.dll
+          test -f ksp-buildrefs/all/UnityEngine.dll
+          test -f ksp-buildrefs/all/UnityEngine.CoreModule.dll
+          test -f ksp-buildrefs/all/UnityEngine.UI.dll
+
+      - name: Build plugin
+        run: xbuild src/ParasiticDraw/ParasiticDraw.csproj /p:Configuration=Release
+
+      - name: Run tests
+        run: |
+          xbuild tests/ParasiticDraw.Tests/ParasiticDraw.Tests.csproj /p:Configuration=Release
+          mono tests/ParasiticDraw.Tests/bin/Release/ParasiticDraw.Tests.exe
+
+      - name: Package GameData
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          test -f GameData/ParasiticDraw/Plugins/ParasiticDraw.dll
+          find GameData/ParasiticDraw/Plugins -maxdepth 1 -type f \
+            ! -name 'ParasiticDraw.dll' \
+            -delete
+          find GameData/ParasiticDraw -name '.gitkeep' -delete
+          zip_name="ParasiticDraw-v${version}.zip"
+          zip -r "$zip_name" GameData/ParasiticDraw
+          echo "ZIP_NAME=$zip_name" >> "$GITHUB_ENV"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ParasiticDraw-v${{ steps.version.outputs.version }}
+          path: ${{ env.ZIP_NAME }}
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ steps.version.outputs.tag }}"
+          version="${{ steps.version.outputs.version }}"
+          title="ParasiticDraw $version"
+
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release edit "$tag" \
+              --title "$title" \
+              --notes-file release-notes.md \
+              --latest
+            gh release upload "$tag" "$ZIP_NAME" --clobber
+          else
+            gh release create "$tag" "$ZIP_NAME" \
+              --title "$title" \
+              --notes-file release-notes.md \
+              --latest
+          fi
