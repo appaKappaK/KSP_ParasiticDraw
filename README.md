@@ -160,8 +160,6 @@ When debug logging is enabled, EC shortfalls appear as:
 ## Project Information
 
 - See [CHANGELOG.md](CHANGELOG.md) for release notes.
-- See [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md) for the v1 implementation
-  plan and deferred feature notes.
 
 ## License
 
