@@ -5,6 +5,7 @@ Player.log
 output_log.txt
 *.log
 /Settings.cfg
+docs/PROJECT_PLAN.md
 
 # Build outputs
 bin/
