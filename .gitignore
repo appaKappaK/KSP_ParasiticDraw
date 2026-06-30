@@ -1,0 +1,25 @@
+# Local KSP install references and logs
+ksp-buildrefs/
+KSP.log
+Player.log
+output_log.txt
+*.log
+
+# Build outputs
+bin/
+obj/
+build/
+dist/
+release/
+*.zip
+
+# IDE/editor state
+.vs/
+.vscode/
+*.user
+*.suo
+*.csproj.user
+
+# OS files
+.DS_Store
+Thumbs.db
