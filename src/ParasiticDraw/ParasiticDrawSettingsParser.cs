@@ -25,6 +25,9 @@ namespace ParasiticDraw
                 case "passiveDrawPreset":
                     settings.PassiveDrawPreset = ParsePreset(rawValue, settings.PassiveDrawPreset);
                     break;
+                case "minimumPartCount":
+                    settings.MinimumPartCount = ParseInt(rawValue, settings.MinimumPartCount);
+                    break;
                 case "baseVesselDraw":
                     settings.BaseVesselDraw = ParseDouble(rawValue, settings.BaseVesselDraw);
                     break;
@@ -70,6 +73,12 @@ namespace ParasiticDraw
         {
             double value;
             return double.TryParse(rawValue, out value) ? value : fallback;
+        }
+
+        private static int ParseInt(string rawValue, int fallback)
+        {
+            int value;
+            return int.TryParse(rawValue, out value) ? value : fallback;
         }
 
         private static PassiveDrawPreset ParsePreset(string rawValue, PassiveDrawPreset fallback)

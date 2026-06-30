@@ -17,10 +17,11 @@ namespace ParasiticDraw
             settings = SettingsLoader.Load();
 
             Debug.Log(string.Format(
-                "[ParasiticDraw] Loaded v1.0.0. Enabled: {0}, Passive draw: {1}, Preset: {2}",
+                "[ParasiticDraw] Loaded v1.1.0. Enabled: {0}, Passive draw: {1}, Preset: {2}, Minimum parts: {3}",
                 settings.Enabled,
                 settings.PassiveDrawEnabled,
-                settings.PassiveDrawPreset));
+                settings.PassiveDrawPreset,
+                settings.MinimumPartCount));
 
             if (settings.DebugLogging)
             {

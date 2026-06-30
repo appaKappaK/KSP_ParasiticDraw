@@ -10,6 +10,7 @@ namespace ParasiticDraw.Tests
             TestInvalidSettingsFallback();
             TestPresetMultipliers();
             TestDisabledSettings();
+            TestMinimumPartCount();
             TestTemperedBalanceTargets();
             TestDeltaClamp();
 
@@ -23,12 +24,14 @@ namespace ParasiticDraw.Tests
 
             ParasiticDrawSettingsParser.ApplyValue(settings, "enabled", "not-a-bool");
             ParasiticDrawSettingsParser.ApplyValue(settings, "passiveDrawPreset", "not-a-preset");
+            ParasiticDrawSettingsParser.ApplyValue(settings, "minimumPartCount", "-5");
             ParasiticDrawSettingsParser.ApplyValue(settings, "perPartDraw", "not-a-number");
             ParasiticDrawSettingsParser.ApplyValue(settings, "perMassTonDraw", "-5");
             ParasiticDrawSettingsParser.Finalize(settings);
 
             Assert(settings.Enabled, "Invalid bool should preserve fallback.");
             AssertEqual(PassiveDrawPreset.Standard, settings.PassiveDrawPreset, "Invalid preset should preserve fallback.");
+            AssertEqual(0, settings.MinimumPartCount, "Negative part threshold should sanitize to zero.");
             AssertNear(0.01, settings.PerPartDraw, "Invalid number should preserve fallback.");
             AssertNear(0.0, settings.PerMassTonDraw, "Negative number should sanitize to zero.");
         }
@@ -40,8 +43,30 @@ namespace ParasiticDraw.Tests
             Assert(settings.Enabled, "Default settings should be enabled.");
             Assert(settings.PassiveDrawEnabled, "Passive draw should be enabled by default.");
             AssertEqual(PassiveDrawPreset.Standard, settings.PassiveDrawPreset, "Default preset should be Standard.");
+            AssertEqual(0, settings.MinimumPartCount, "Default minimum part count should affect every vessel.");
             AssertNear(0.01, settings.PerPartDraw, "Default part draw should match the v1 plan.");
             AssertNear(0.02, settings.PerMassTonDraw, "Default mass draw should match the v1 plan.");
+        }
+
+        private static void TestMinimumPartCount()
+        {
+            ParasiticDrawSettings settings = ParasiticDrawSettings.Defaults();
+            settings.MinimumPartCount = 10;
+
+            AssertNear(
+                0.0,
+                PassiveDrawCalculator.CalculateEcPerSecond(settings, new VesselDrawSnapshot { PartCount = 9 }),
+                "Vessels below the minimum part count should be ignored.");
+
+            AssertNear(
+                0.15,
+                PassiveDrawCalculator.CalculateEcPerSecond(settings, new VesselDrawSnapshot { PartCount = 10 }),
+                "Vessels equal to the minimum part count should be affected.");
+
+            AssertNear(
+                0.16,
+                PassiveDrawCalculator.CalculateEcPerSecond(settings, new VesselDrawSnapshot { PartCount = 11 }),
+                "Vessels above the minimum part count should be affected.");
         }
 
         private static void TestPresetMultipliers()

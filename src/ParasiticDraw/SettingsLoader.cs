@@ -31,6 +31,7 @@ namespace ParasiticDraw
             ParasiticDrawSettingsParser.ApplyValue(settings, "debugLogging", GetValue(node, "debugLogging"));
             ParasiticDrawSettingsParser.ApplyValue(settings, "passiveDrawEnabled", GetValue(node, "passiveDrawEnabled"));
             ParasiticDrawSettingsParser.ApplyValue(settings, "passiveDrawPreset", GetValue(node, "passiveDrawPreset"));
+            ParasiticDrawSettingsParser.ApplyValue(settings, "minimumPartCount", GetValue(node, "minimumPartCount"));
             ParasiticDrawSettingsParser.ApplyValue(settings, "baseVesselDraw", GetValue(node, "baseVesselDraw"));
             ParasiticDrawSettingsParser.ApplyValue(settings, "perPartDraw", GetValue(node, "perPartDraw"));
             ParasiticDrawSettingsParser.ApplyValue(settings, "perMassTonDraw", GetValue(node, "perMassTonDraw"));

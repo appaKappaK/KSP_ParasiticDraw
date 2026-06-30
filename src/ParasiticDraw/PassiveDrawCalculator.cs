@@ -13,6 +13,11 @@ namespace ParasiticDraw
 
             settings.Sanitize();
 
+            if (vessel.PartCount < settings.MinimumPartCount)
+            {
+                return 0.0;
+            }
+
             double baseDraw =
                 settings.BaseVesselDraw
                 + NonNegative(vessel.PartCount) * settings.PerPartDraw

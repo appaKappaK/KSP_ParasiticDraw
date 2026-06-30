@@ -15,6 +15,7 @@ mass, crew capacity, crew aboard, and command modules.
 - **Adds passive ElectricCharge draw** to the active loaded vessel.
 - **Scales with vessel characteristics**, including part count, mass, crew
   capacity, crew present, and command modules.
+- **Can ignore small vessels** with a configurable minimum part-count threshold.
 - **Uses configurable presets** for Light, Standard, Harsh, and Custom balance.
 - **Avoids save mutation**: it drains EC but does not damage vessels, disable
   parts, kill crew, or write vessel state.
@@ -53,7 +54,7 @@ GameData/
 After entering flight, your `KSP.log` should contain:
 
 ```text
-[ParasiticDraw] Loaded v1.0.0.
+[ParasiticDraw] Loaded v1.1.0.
 ```
 
 ## Configuration
@@ -69,6 +70,8 @@ PARASITIC_DRAW_SETTINGS
   passiveDrawEnabled = true
   passiveDrawPreset = Standard
 
+  minimumPartCount = 0
+
   baseVesselDraw = 0.05
   perPartDraw = 0.01
   perMassTonDraw = 0.02
@@ -83,6 +86,9 @@ PARASITIC_DRAW_SETTINGS
 The draw formula is:
 
 ```text
+if partCount < minimumPartCount:
+  EC/s = 0
+
 EC/s =
 (
   baseVesselDraw
@@ -132,7 +138,7 @@ other power-system mods.
 After entering flight, confirm that `KSP.log` contains:
 
 ```text
-[ParasiticDraw] Loaded v1.0.0.
+[ParasiticDraw] Loaded v1.1.0.
 ```
 
 If EC drains but Dynamic Battery Storage does not show `Parasitic Draw`, confirm

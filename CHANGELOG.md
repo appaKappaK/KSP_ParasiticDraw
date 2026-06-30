@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-06-30
+
+### Added
+
+- `minimumPartCount` setting to skip passive draw on vessels below a configured
+  part-count threshold.
+
 ## [1.0.0] - 2026-06-30
 
 ### Added
@@ -18,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Versioning
 
-**Current version:** 1.0.0
+**Current version:** 1.1.0
 
 - **Major (1.#.#)**: Breaking changes or major reworks of core mechanics.
 

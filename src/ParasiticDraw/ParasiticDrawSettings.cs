@@ -18,6 +18,7 @@ namespace ParasiticDraw
         public bool DebugLogging { get; set; }
         public bool PassiveDrawEnabled { get; set; }
         public PassiveDrawPreset PassiveDrawPreset { get; set; }
+        public int MinimumPartCount { get; set; }
         public double BaseVesselDraw { get; set; }
         public double PerPartDraw { get; set; }
         public double PerMassTonDraw { get; set; }
@@ -34,6 +35,7 @@ namespace ParasiticDraw
                 DebugLogging = false,
                 PassiveDrawEnabled = true,
                 PassiveDrawPreset = PassiveDrawPreset.Standard,
+                MinimumPartCount = 0,
                 BaseVesselDraw = 0.05,
                 PerPartDraw = 0.01,
                 PerMassTonDraw = 0.02,
@@ -64,6 +66,7 @@ namespace ParasiticDraw
 
         public void Sanitize()
         {
+            MinimumPartCount = MinimumPartCount < 0 ? 0 : MinimumPartCount;
             BaseVesselDraw = NonNegative(BaseVesselDraw);
             PerPartDraw = NonNegative(PerPartDraw);
             PerMassTonDraw = NonNegative(PerMassTonDraw);
