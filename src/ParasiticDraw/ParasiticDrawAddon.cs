@@ -14,19 +14,13 @@ namespace ParasiticDraw
 
         public void Start()
         {
-            settings = SettingsLoader.Load();
+            ReloadSettings(true);
+            GameEvents.OnGameSettingsApplied.Add(ReloadSettings);
+        }
 
-            Debug.Log(string.Format(
-                "[ParasiticDraw] Loaded v1.1.0. Enabled: {0}, Passive draw: {1}, Preset: {2}, Minimum parts: {3}",
-                settings.Enabled,
-                settings.PassiveDrawEnabled,
-                settings.PassiveDrawPreset,
-                settings.MinimumPartCount));
-
-            if (settings.DebugLogging)
-            {
-                Debug.Log("[ParasiticDraw] Loaded settings. Passive draw enabled: " + settings.PassiveDrawEnabled);
-            }
+        public void OnDestroy()
+        {
+            GameEvents.OnGameSettingsApplied.Remove(ReloadSettings);
         }
 
         public void FixedUpdate()
@@ -41,14 +35,15 @@ namespace ParasiticDraw
                 settings = SettingsLoader.Load();
             }
 
-            if (!settings.Enabled || !settings.PassiveDrawEnabled)
+            Vessel vessel = FlightGlobals.ActiveVessel;
+            if (vessel == null || !vessel.loaded || vessel.rootPart == null)
             {
                 return;
             }
 
-            Vessel vessel = FlightGlobals.ActiveVessel;
-            if (vessel == null || !vessel.loaded || vessel.rootPart == null)
+            if (!settings.Enabled || !settings.PassiveDrawEnabled)
             {
+                UpdateReporterModules(vessel, 0.0);
                 return;
             }
 
@@ -80,6 +75,31 @@ namespace ParasiticDraw
                     "[ParasiticDraw] Shortfall: {0:F3} EC on {1}",
                     requested - consumed,
                     vessel.vesselName));
+            }
+        }
+
+        private void ReloadSettings()
+        {
+            ReloadSettings(false);
+        }
+
+        private void ReloadSettings(bool logAlways)
+        {
+            settings = SettingsLoader.Load();
+
+            if (logAlways || settings.DebugLogging)
+            {
+                Debug.Log(string.Format(
+                    "[ParasiticDraw] Loaded v1.2.1. Enabled: {0}, Preset: {1}, Minimum parts: {2}, Global multiplier: {3:F2}x",
+                    settings.Enabled && settings.PassiveDrawEnabled,
+                    settings.PassiveDrawPreset,
+                    settings.MinimumPartCount,
+                    settings.GlobalDrawMultiplier));
+            }
+
+            if (settings.DebugLogging)
+            {
+                Debug.Log("[ParasiticDraw] Settings reloaded. Passive draw enabled: " + settings.PassiveDrawEnabled);
             }
         }
 

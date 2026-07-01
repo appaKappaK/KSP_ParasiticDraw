@@ -34,6 +34,9 @@ namespace ParasiticDraw.Tests
             AssertEqual(0, settings.MinimumPartCount, "Negative part threshold should sanitize to zero.");
             AssertNear(0.01, settings.PerPartDraw, "Invalid number should preserve fallback.");
             AssertNear(0.0, settings.PerMassTonDraw, "Negative number should sanitize to zero.");
+
+            ParasiticDrawSettingsParser.ApplyValue(settings, "passiveDrawPreset", "Custom");
+            AssertEqual(PassiveDrawPreset.Standard, settings.PassiveDrawPreset, "Legacy Custom preset should map to Standard.");
         }
 
         private static void TestDefaults()
@@ -83,8 +86,8 @@ namespace ParasiticDraw.Tests
             settings.PassiveDrawPreset = PassiveDrawPreset.Harsh;
             AssertNear(standard * 2.0, PassiveDrawCalculator.CalculateEcPerSecond(settings, vessel), "Harsh should be double Standard.");
 
-            settings.PassiveDrawPreset = PassiveDrawPreset.Custom;
-            AssertNear(standard, PassiveDrawCalculator.CalculateEcPerSecond(settings, vessel), "Custom should apply no preset scaling.");
+            settings.PassiveDrawPreset = PassiveDrawPreset.Strong;
+            AssertNear(standard * 3.0, PassiveDrawCalculator.CalculateEcPerSecond(settings, vessel), "Strong should triple Standard.");
         }
 
         private static void TestDisabledSettings()

@@ -1,6 +1,6 @@
 namespace ParasiticDraw
 {
-    public struct VesselDrawSnapshot
+    public sealed class VesselDrawSnapshot
     {
         public int PartCount { get; set; }
         public double VesselMassTons { get; set; }

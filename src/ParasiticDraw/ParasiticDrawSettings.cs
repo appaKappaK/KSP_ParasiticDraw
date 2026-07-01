@@ -7,7 +7,7 @@ namespace ParasiticDraw
         Light,
         Standard,
         Harsh,
-        Custom
+        Strong
     }
 
     public sealed class ParasiticDrawSettings
@@ -56,7 +56,8 @@ namespace ParasiticDraw
                         return 0.5;
                     case PassiveDrawPreset.Harsh:
                         return 2.0;
-                    case PassiveDrawPreset.Custom:
+                    case PassiveDrawPreset.Strong:
+                        return 3.0;
                     case PassiveDrawPreset.Standard:
                     default:
                         return 1.0;

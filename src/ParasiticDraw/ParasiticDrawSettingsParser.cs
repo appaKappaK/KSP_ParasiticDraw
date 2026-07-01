@@ -83,6 +83,11 @@ namespace ParasiticDraw
 
         private static PassiveDrawPreset ParsePreset(string rawValue, PassiveDrawPreset fallback)
         {
+            if (string.Equals(rawValue, "Custom", StringComparison.OrdinalIgnoreCase))
+            {
+                return PassiveDrawPreset.Standard;
+            }
+
             PassiveDrawPreset value;
             return Enum.TryParse(rawValue, true, out value) ? value : fallback;
         }

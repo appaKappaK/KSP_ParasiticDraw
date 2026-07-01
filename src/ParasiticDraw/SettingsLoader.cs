@@ -10,6 +10,11 @@ namespace ParasiticDraw
 
         public static ParasiticDrawSettings Load()
         {
+            return ApplyDifficultySettings(LoadConfigSettings());
+        }
+
+        public static ParasiticDrawSettings LoadConfigSettings()
+        {
             ParasiticDrawSettings settings = ParasiticDrawSettings.Defaults();
             string path = Path.Combine(KSPUtil.ApplicationRootPath, RelativeSettingsPath);
             ConfigNode config = ConfigNode.Load(path);
@@ -41,6 +46,27 @@ namespace ParasiticDraw
             ParasiticDrawSettingsParser.ApplyValue(settings, "globalDrawMultiplier", GetValue(node, "globalDrawMultiplier"));
 
             return ParasiticDrawSettingsParser.Finalize(settings);
+        }
+
+        private static ParasiticDrawSettings ApplyDifficultySettings(ParasiticDrawSettings settings)
+        {
+            ParasiticDrawDifficultySettings difficulty = HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters == null
+                ? null
+                : HighLogic.CurrentGame.Parameters.CustomParams<ParasiticDrawDifficultySettings>();
+
+            if (difficulty == null)
+            {
+                return settings;
+            }
+
+            settings.Enabled = difficulty.enabled;
+            settings.PassiveDrawEnabled = difficulty.enabled;
+            settings.PassiveDrawPreset = difficulty.ToPreset();
+            settings.MinimumPartCount = difficulty.minimumPartCount;
+            settings.GlobalDrawMultiplier = difficulty.globalDrawMultiplier;
+            settings.Sanitize();
+
+            return settings;
         }
 
         private static string GetValue(ConfigNode node, string key)

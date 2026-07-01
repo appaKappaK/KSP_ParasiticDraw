@@ -6,7 +6,7 @@ namespace ParasiticDraw
     {
         public static double CalculateEcPerSecond(ParasiticDrawSettings settings, VesselDrawSnapshot vessel)
         {
-            if (settings == null || !settings.Enabled || !settings.PassiveDrawEnabled)
+            if (settings == null || vessel == null || !settings.Enabled || !settings.PassiveDrawEnabled)
             {
                 return 0.0;
             }
