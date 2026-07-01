@@ -7,7 +7,7 @@
 
 It is intended for stations, bases, and large ships where power production can
 otherwise become irrelevant once enough solar panels and battery storage are
-installed. ParasiticDraw adds a steady background load based on vessel size,
+installed. ParasiticDraw adds a steady active-vessel load based on vessel size,
 mass, crew capacity, crew aboard, and command modules.
 
 ## Features
@@ -16,9 +16,7 @@ mass, crew capacity, crew aboard, and command modules.
 - **Scales with vessel characteristics**, including part count, mass, crew
   capacity, crew present, and command modules.
 - **Can ignore small vessels** with a configurable minimum part-count threshold.
-- **Uses configurable presets** for Light, Standard, Harsh, and Custom balance.
-- **Avoids save mutation**: it drains EC but does not damage vessels, disable
-  parts, kill crew, or write vessel state.
+- **Uses configurable presets** for Light, Standard, Harsh, and Strong balance.
 - **Includes Dynamic Battery Storage compatibility** so the added drain appears
   in DBS power monitoring when DBS is installed.
 - **Includes optional debug logging** for troubleshooting.
@@ -54,12 +52,18 @@ GameData/
 After entering flight, your `KSP.log` should contain:
 
 ```text
-[ParasiticDraw] Loaded v1.1.0.
+[ParasiticDraw] Loaded vX.X.X.
 ```
 
 ## Configuration
 
-`GameData/ParasiticDraw/PluginData/ParasiticDraw/Settings.cfg` contains:
+Most players can tune ParasiticDraw from KSP's difficulty options. New saves
+start from the values in
+`GameData/ParasiticDraw/PluginData/ParasiticDraw/Settings.cfg`; after that, the
+save's difficulty settings control enabled state, preset, minimum part count,
+and global multiplier.
+
+The included defaults are:
 
 ```text
 PARASITIC_DRAW_SETTINGS
@@ -83,34 +87,25 @@ PARASITIC_DRAW_SETTINGS
 }
 ```
 
-The draw formula is:
-
-```text
-if partCount < minimumPartCount:
-  EC/s = 0
-
-EC/s =
-(
-  baseVesselDraw
-  + partCount * perPartDraw
-  + vesselMassTons * perMassTonDraw
-  + crewCapacity * perCrewCapacityDraw
-  + currentCrew * perCrewPresentDraw
-  + commandModuleCount * perCommandModuleDraw
-)
-* presetMultiplier
-* globalDrawMultiplier
-```
-
-Preset multipliers:
+Presets control the overall strength:
 
 - `Light`: `0.5x`
 - `Standard`: `1.0x`
 - `Harsh`: `2.0x`
-- `Custom`: `1.0x`
+- `Strong`: `3.0x`
 
-> **Tip:** Settings are loaded when the flight addon starts. Restart KSP after
-> editing `Settings.cfg` in the current version.
+In KSP's difficulty menu, `Preset Multiplier` uses a compact numeric slider:
+
+- `0`: `Light` / `0.5x`
+- `1`: `Standard` / `1.0x`
+- `2`: `Harsh` / `2.0x`
+- `3`: `Strong` / `3.0x`
+
+`Minimum Part Count` lets you ignore small craft. The difficulty-menu slider is
+capped at `100` so it remains usable in one-part increments. Higher startup
+defaults can still be placed in `Settings.cfg`.
+
+`debugLogging` remains config-file only.
 
 ## Compatibility
 
@@ -122,50 +117,16 @@ a hidden reporting module to command-capable parts. DBS then shows a
 `Parasitic Draw` consumer category and includes the drain in its total
 `Power Consumed` value.
 
-ParasiticDraw does not require Kerbalism, Near Future Electrical, SystemHeat, or
-other power-system mods.
-
 ## Current Limitations
 
-- Only the active loaded vessel is affected.
 - Unloaded vessels and background catch-up drain are not simulated yet.
 - High non-physics time warp is not catch-up simulated in this release.
-- Settings do not hot-reload while KSP is running.
-- There is no in-game settings window yet.
-
-## Troubleshooting
-
-After entering flight, confirm that `KSP.log` contains:
-
-```text
-[ParasiticDraw] Loaded v1.1.0.
-```
-
-If EC drains but Dynamic Battery Storage does not show `Parasitic Draw`, confirm
-that Module Manager and Dynamic Battery Storage are installed and restart KSP so
-the compatibility patch can apply.
-
-For high-visibility testing, temporarily set:
-
-```text
-debugLogging = true
-globalDrawMultiplier = 20.0
-```
-
-Then restart KSP and load a vessel with batteries. Restore
-`globalDrawMultiplier = 1.0` after testing.
-
-When debug logging is enabled, EC shortfalls appear as:
-
-```text
-[ParasiticDraw] Shortfall: N.NNN EC on Vessel Name
-```
-
-**Please include `KSP.log` when reporting a problem.**
 
 ## Project Information
 
 - See [CHANGELOG.md](CHANGELOG.md) for release notes.
+- See [src/ParasiticDraw/README.md](src/ParasiticDraw/README.md) for technical
+  notes and troubleshooting.
 
 ## License
 
