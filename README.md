@@ -122,6 +122,24 @@ a hidden reporting module to command-capable parts. DBS then shows a
 `Parasitic Draw` consumer category and includes the drain in its total
 `Power Consumed` value.
 
+## Troubleshooting
+
+On Linux/Proton installations, clicking Save in KSP's difficulty settings may
+occasionally show `IOException: Source and destination are not on the same
+device`. If the log points to KSP Community Fixes' `ConfigNodeTempCopy` patch,
+create `GameData/KSPCF_UserSettings.cfg` with:
+
+```cfg
+@KSP_COMMUNITY_FIXES:AFTER[KSPCommunityFixes]
+{
+    @ConfigNodeTempCopy = false
+}
+```
+
+Restart KSP after adding the file. This disables only KSPCF's temporary-copy
+save protection, which can conflict with Proton's filesystem mapping; it is not
+required for most installations.
+
 ## Current Limitations
 
 - Only the active, loaded vessel is affected. Unloaded vessels and background

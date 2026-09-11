@@ -132,4 +132,17 @@ When debug logging is enabled, EC shortfalls appear as:
 [ParasiticDraw] Shortfall: N.NNN EC on Vessel Name
 ```
 
+On Linux/Proton installations, an `IOException` stating that the source and
+destination are not on the same device when saving KSP difficulty settings is
+usually caused by KSP Community Fixes' `ConfigNodeTempCopy` patch rather than
+ParasiticDraw. If the stack trace names that patch, disable it with a
+`GameData/KSPCF_UserSettings.cfg` file containing:
+
+```cfg
+@KSP_COMMUNITY_FIXES:AFTER[KSPCommunityFixes]
+{
+    @ConfigNodeTempCopy = false
+}
+```
+
 Please include `KSP.log` when reporting a problem.
