@@ -155,7 +155,7 @@ required for most installations.
 
 - See [CHANGELOG.md](CHANGELOG.md) for release notes.
 - See [src/ParasiticDraw/README.md](src/ParasiticDraw/README.md) for technical
-  notes and troubleshooting.
+  notes.
 
 ## License
 
