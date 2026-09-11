@@ -47,7 +47,7 @@ namespace ParasiticDraw
                     settings.PerCommandModuleDraw = ParseDouble(rawValue, settings.PerCommandModuleDraw);
                     break;
                 case "globalDrawMultiplier":
-                    settings.GlobalDrawMultiplier = ParseDouble(rawValue, settings.GlobalDrawMultiplier);
+                    settings.GlobalDrawMultiplier = ParseMultiplier(rawValue, settings.GlobalDrawMultiplier);
                     break;
             }
         }
@@ -73,6 +73,17 @@ namespace ParasiticDraw
         {
             double value;
             return double.TryParse(rawValue, out value) ? value : fallback;
+        }
+
+        private static double ParseMultiplier(string rawValue, double fallback)
+        {
+            string normalized = rawValue.Trim();
+            if (normalized.EndsWith("x", StringComparison.OrdinalIgnoreCase))
+            {
+                normalized = normalized.Substring(0, normalized.Length - 1).Trim();
+            }
+
+            return ParseDouble(normalized, fallback);
         }
 
         private static int ParseInt(string rawValue, int fallback)

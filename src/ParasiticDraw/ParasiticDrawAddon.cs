@@ -90,7 +90,7 @@ namespace ParasiticDraw
             if (logAlways || settings.DebugLogging)
             {
                 Debug.Log(string.Format(
-                    "[ParasiticDraw] Loaded v1.2.1. Enabled: {0}, Preset: {1}, Minimum parts: {2}, Global multiplier: {3:F2}x",
+                    "[ParasiticDraw] Loaded v1.2.2. Enabled: {0}, Preset: {1}, Minimum parts: {2}, Global multiplier: {3:F2}x",
                     settings.Enabled && settings.PassiveDrawEnabled,
                     settings.PassiveDrawPreset,
                     settings.MinimumPartCount,

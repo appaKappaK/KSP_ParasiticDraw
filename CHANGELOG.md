@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-09-11
+
+### Fixed
+
+- Fixed an error that could appear when changing and saving the global draw
+  multiplier in KSP's difficulty settings.
+
 ## [1.2.1] - 2026-07-01
 
 ### Added
@@ -56,7 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Versioning
 
-**Current version:** 1.2.1
+**Current version:** 1.2.2
 
 - **Major (1.#.#)**: Breaking changes or major reworks of core mechanics.
 

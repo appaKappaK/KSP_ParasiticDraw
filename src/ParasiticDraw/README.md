@@ -7,6 +7,9 @@ This directory contains the KSP plugin source for `ParasiticDraw.dll`.
 `ParasiticDrawAddon` is a flight-scene addon. It applies EC drain only to
 `FlightGlobals.ActiveVessel` when that vessel is loaded and has a root part.
 Unloaded/background vessels are intentionally outside the current runtime scope.
+The addon adds demand through the active vessel's ElectricCharge resource
+network; it does not modify generators, solar panels, batteries, or other
+power-production behavior.
 
 High non-physics time-warp catch-up is also intentionally not simulated. Normal
 flight and physics-warp drain use `TimeWarp.deltaTime` in `FixedUpdate()`, with

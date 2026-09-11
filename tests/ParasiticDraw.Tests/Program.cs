@@ -8,6 +8,7 @@ namespace ParasiticDraw.Tests
         {
             TestDefaults();
             TestInvalidSettingsFallback();
+            TestGlobalMultiplierDisplayText();
             TestPresetMultipliers();
             TestDisabledSettings();
             TestMinimumPartCount();
@@ -49,6 +50,15 @@ namespace ParasiticDraw.Tests
             AssertEqual(0, settings.MinimumPartCount, "Default minimum part count should affect every vessel.");
             AssertNear(0.01, settings.PerPartDraw, "Default part draw should match the v1 plan.");
             AssertNear(0.02, settings.PerMassTonDraw, "Default mass draw should match the v1 plan.");
+        }
+
+        private static void TestGlobalMultiplierDisplayText()
+        {
+            ParasiticDrawSettings settings = ParasiticDrawSettings.Defaults();
+
+            ParasiticDrawSettingsParser.ApplyValue(settings, "globalDrawMultiplier", "1.5x");
+
+            AssertNear(1.5, settings.GlobalDrawMultiplier, "Global multiplier display text should accept the x suffix.");
         }
 
         private static void TestMinimumPartCount()

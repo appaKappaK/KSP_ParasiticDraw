@@ -11,7 +11,7 @@ namespace ParasiticDraw
         [GameParameters.CustomIntParameterUI("Minimum Part Count", minValue = 0, maxValue = 100, stepSize = 1, displayFormat = "N0", toolTip = "Vessels below this part count are ignored. Higher values can still be set in Settings.cfg.")]
         public int minimumPartCount = 0;
 
-        [GameParameters.CustomFloatParameterUI("Global Draw Multiplier", minValue = 0f, maxValue = 20f, stepCount = 201, displayFormat = "0.0x", toolTip = "Multiplier applied after preset scaling.")]
+        [GameParameters.CustomFloatParameterUI("Global Draw Multiplier", minValue = 0f, maxValue = 20f, stepCount = 201, displayFormat = "0.0", toolTip = "Multiplier applied after preset scaling.")]
         public float globalDrawMultiplier = 1f;
 
         public ParasiticDrawDifficultySettings()

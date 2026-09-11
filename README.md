@@ -10,6 +10,11 @@ otherwise become irrelevant once enough solar panels and battery storage are
 installed. ParasiticDraw adds a steady active-vessel load based on vessel size,
 mass, crew capacity, crew aboard, and command modules.
 
+ParasiticDraw is intentionally a lightweight difficulty mechanic: it increases
+ElectricCharge demand on the craft you are currently flying. It does not alter
+power generation and does not simulate unloaded vessels or an entire save in
+the background.
+
 ## Features
 
 - **Adds passive ElectricCharge draw** to the active loaded vessel.
@@ -119,8 +124,14 @@ a hidden reporting module to command-capable parts. DBS then shows a
 
 ## Current Limitations
 
-- Unloaded vessels and background catch-up drain are not simulated yet.
+- Only the active, loaded vessel is affected. Unloaded vessels and background
+  catch-up drain are not simulated yet.
+- ParasiticDraw adds ElectricCharge demand; it does not change solar panels,
+  generators, batteries, or other power-production behavior.
 - High non-physics time warp is not catch-up simulated in this release.
+- The calculation is based on the active vessel's current part count, mass,
+  crew, and command modules; it is not a background simulation of vessel power
+  usage across the save.
 
 ## Project Information
 
