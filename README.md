@@ -1,5 +1,6 @@
 # ParasiticDraw
 
+![AI-assisted development](https://img.shields.io/badge/development-AI--assisted-1f3a5f?style=flat-square)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE) [![KSP Version](https://img.shields.io/badge/KSP-1.12.x-green.svg)](https://www.kerbalspaceprogram.com/) [![GitHub release](https://img.shields.io/github/v/release/appakappak/KSP_ParasiticDraw?include_prereleases&sort=semver)](https://github.com/appaKappaK/KSP_ParasiticDraw/releases/latest)
 
 > **ParasiticDraw** is a small Kerbal Space Program 1 mod that adds configurable
